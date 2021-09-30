@@ -104,7 +104,7 @@ public final class PartialFormatter {
         self.resetVariables()
 
         guard self.isValidRawNumber(rawNumber) else {
-            return rawNumber
+            return rawNumber.filter { PhoneNumberConstants.validCharacters.contains($0) }
         }
         let split = splitNumberAndPausesOrWaits(rawNumber)
         
