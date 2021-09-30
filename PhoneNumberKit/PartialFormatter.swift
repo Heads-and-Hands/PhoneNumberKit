@@ -112,7 +112,8 @@ public final class PartialFormatter {
                 return formatPartial(partialFormatted)
             }
         }
-        let split = splitNumberAndPausesOrWaits(rawNumber)
+
+        let split = splitNumberAndPausesOrWaits(String(rawNumber.prefix(rawNumber.count > 13 ? rawNumber.count - 13 : rawNumber.count)))
         
         var nationalNumber = self.nationalNumber(from: split.number)
         if let formats = availableFormats(nationalNumber) {
