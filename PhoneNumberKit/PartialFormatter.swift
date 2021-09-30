@@ -282,31 +282,11 @@ public final class PartialFormatter {
     }
     
     func availableFormats(_ rawNumber: String) -> [MetadataPhoneNumberFormat]? {
-        guard let regexManager = regexManager else { return nil }
-        var tempPossibleFormats = [MetadataPhoneNumberFormat]()
-        var possibleFormats = [MetadataPhoneNumberFormat]()
-        if let metadata = currentMetadata {
-            let formatList = metadata.numberFormats
-            for format in formatList {
-                if self.isFormatEligible(format) {
-                    tempPossibleFormats.append(format)
-                    if let leadingDigitPattern = format.leadingDigitsPatterns?.last {
-                        if regexManager.stringPositionByRegex(leadingDigitPattern, string: String(rawNumber)) == 0 {
-                            possibleFormats.append(format)
-                        }
-                    } else {
-                        if regexManager.matchesEntirely(format.pattern, string: String(rawNumber)) {
-                            possibleFormats.append(format)
-                        }
-                    }
-                }
-            }
-            if possibleFormats.count == 0 {
-                possibleFormats.append(contentsOf: tempPossibleFormats)
-            }
-            return possibleFormats
+        if let phoneFormatter = currentMetadata?.numberFormats.last {
+            return [phoneFormatter]
+        } else {
+            return nil
         }
-        return nil
     }
 
     func applyFormat(_ rawNumber: String, formats: [MetadataPhoneNumberFormat]) -> String? {
